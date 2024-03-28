@@ -1,5 +1,4 @@
-﻿using System;
-using EntityFrameworkExtensions;
+﻿using EntityFrameworkExtensions;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -7,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TestWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class Initialize : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,8 +25,17 @@ namespace TestWebApp.Migrations
                     table.PrimaryKey("PK_Forecasts", x => x.Id);
                 });
 
-            migrationBuilder.CreateMerge(WeatherForecast)
-            ;
+            migrationBuilder.CreateMerge(
+                name: "Forecasts",
+                columns: table => new
+                {
+                    Id = table.Column<System.Guid>(type: "uniqueidentifier", nullable: false),
+                    Date = table.Column<System.DateTime>(type: "datetime2", nullable: false),
+                    Summary = table.Column<System.String>(type: "nvarchar(max)", nullable: false),
+                    TemperatureC = table.Column<System.Int32>(type: "int", nullable: false)
+                }
+                );
+
         }
 
         /// <inheritdoc />
@@ -36,7 +44,7 @@ namespace TestWebApp.Migrations
             migrationBuilder.DropTable(
                 name: "Forecasts");
 
-            migrationBuilder.DropMerge(WeatherForecast)
+            migrationBuilder.DropMerge("Forecasts")
             ;
         }
     }

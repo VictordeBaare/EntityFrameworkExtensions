@@ -37,12 +37,27 @@ namespace EntityFrameworkExtensions
 
         private IEnumerable<MigrationOperation> Remove(IEntityType source, DiffContext context)
         {
-            yield return new DropMergeOperation(source.Name);
+            yield return new DropMergeOperation(source.GetTableName());
         }
 
         private IEnumerable<MigrationOperation> Add(IEntityType target, DiffContext context)
         {
-            yield return new CreateMergeOperation(target.GetDefaultTableName(), target.GetProperties().Select(x => new MergeProperty { DbType = x.GetColumnType(), Name = x.GetColumnName(), IsNullable = x.IsNullable, IsForeignKey = x.IsForeignKey(), IsPrimaryKey = x.IsPrimaryKey() }).ToList());
+            foreach (var table in target.GetTableMappings())
+            {
+                var addColumnOperations = table.Table.Columns.Select(x => new AddColumnOperation
+                {
+                    Table = target.GetTableName(),
+                    Schema = table.Table.Schema,
+                    Name = x.Name,
+                    ClrType = x.StoreTypeMapping.ClrType,
+                    ColumnType = x.StoreTypeMapping.StoreType,
+                    IsNullable = x.IsNullable,
+                    Precision = x.Precision,
+                    Scale = x.Scale,
+                });
+
+                yield return new CreateMergeOperation(target.GetTableName(), addColumnOperations);
+            }
         }
 
         private IEnumerable<MigrationOperation> Diff(IEntityType source, IEntityType target, DiffContext context)

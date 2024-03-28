@@ -12,8 +12,8 @@ using TestWebApp;
 namespace TestWebApp.Migrations
 {
     [DbContext(typeof(SqlDbContext))]
-    [Migration("20230206095757_Initialize")]
-    partial class Initialize
+    [Migration("20240327163814_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -1,4 +1,1 @@
-﻿
-using Microsoft.EntityFrameworkCore.Design;
-
-[DesignTimeServicesReference("EntityFrameworkExtensions.MergeDesignTimeServices", "EntityFrameworkExtensions")]
+﻿//[DesignTimeServicesReference("EntityFrameworkExtensions.MergeDesignTimeServices", "EntityFrameworkExtensions")]
